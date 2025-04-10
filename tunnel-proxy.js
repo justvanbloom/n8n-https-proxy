@@ -82,7 +82,7 @@ const options = {
 const tunnelAgent = tunnel.httpsOverHttp({
     proxy: {
         host: corporateProxy.hostname,
-        port: parseInt(corporateProxy.port) || 3128
+        port: parseInt(corporateProxy.port) || 1234
     }
 });
 
