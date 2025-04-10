@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: always
+    ports:
+      - "8083:5678"
+    environment:
+      - VIRTUAL_HOST=n8n.local
+      - VIRTUAL_PORT=5678
+      - LETSENCRYPT_HOST=n8n.local
+      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_PORT=5678
+      - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
+      - N8N_PAYLOAD_SIZE_MAX=512
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true 
+      - N8N_PROTOCOL=http
+      - N8N_SECURE_COOKIE=false
+      - N8N_NODE_FUNCTION_ALLOW_EXTERNAL=true
+      - NODE_ENV=production
+      - WEBHOOK_URL=http://${SUBDOMAIN}.${DOMAIN_NAME}:8083/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+    volumes:
+      - ./data/n8n_data:/home/node/.n8n
+
+  https-proxy:
+    image: proxy_https-proxy:latest
+    #build: .
+    #ports:
+    # - "8443:8443"
+    environment:
+      - CORPORATE_PROXY=http://ip:1234  #Enter your company proxy URL here
+      - PROXY_PORT=8443
+      - PROXY_HOST=0.0.0.0
+      - ALLOWED_IPS=*
+    #volumes:
+    # - ./certs:/app/certs:ro  #Place your own certificates there if needed
+    restart: unless-stopped
