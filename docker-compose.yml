@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  https-proxy:
+    build: .
+    ports:
+      - "8443:8443"
+    environment:
+      - CORPORATE_PROXY=http://ip:1234  #Enter your company proxy URL here
+      - PROXY_PORT=8443
+      - PROXY_HOST=0.0.0.0
+      - ALLOWED_IPS=127.0.0.1,10.23.16.27,172.*
+    volumes:
+      - ./certs:/app/certs:ro  #Optional: For your own certificates
+    restart: unless-stopped
