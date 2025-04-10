@@ -1,0 +1,13 @@
+{
+  "name": "n8n-https-proxy",
+  "version": "1.0.0",
+  "description": "HTTPS to HTTP proxy for n8n",
+  "main": "proxy.js",
+  "dependencies": {
+    "http-proxy-agent": "^5.0.0",
+    "tunnel": "^0.0.6"
+  },
+  "scripts": {
+    "start": "node proxy.js"
+  }
+}
